@@ -10,6 +10,7 @@ Package: kv
 Section: devel
 Priority: optional
 Architecture: all
+Depends: jq
 Description: Run commands in registered directories
  Alias directories, and run commands in those directories,
  kv autocompletion of commands and paths.
