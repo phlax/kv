@@ -1,0 +1,48 @@
+
+
+START=1
+CONF="default"
+
+
+complete_key () {
+    cmd=${COMP_WORDS[$START]}
+    case $cmd in
+	get | unset)
+	    if [ "$1" != "" ] ; then
+		keys=$(kv -c $CONF keys | grep "^$1")
+	    else
+		keys=$(kv -c $CONF keys)
+	    fi
+	    if [ "$keys" != "" ]; then
+		COMPREPLY=( $(compgen -W "${keys[@]##*/}") )
+	    fi
+	    ;;
+    esac
+}
+
+
+_kv_complete()
+{
+    local cur prev commands cmd
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    commands="dump get list set unset"
+    if [[ ${COMP_WORDS[1]} == "-c" ]]; then
+	if [ $COMP_CWORD = 2 ]; then
+	    configs=$(ls ~/.kv)
+	    COMPREPLY=( $(compgen -W "${configs[@]##*/}" -- ${cur}) )
+	fi
+	CONF=${COMP_WORDS[2]}
+	START=3
+    fi
+    if [ $COMP_CWORD == $START ]; then
+	COMPREPLY=( $(compgen -W "${commands[@]##*/}" -- ${cur}) )
+    elif [[ $COMP_CWORD == $(($START + 1)) ]]; then
+	complete_key $cur
+    fi
+    return 0
+}
+
+
+complete -F _kv_complete kv

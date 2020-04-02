@@ -1,0 +1,10 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+override_dh_installman:
+	mkdir -p debian/tmp
+	pandoc --standalone --from gfm --to man README.md --output debian/tmp/kv.1
+	dh_installman
+	rm -rf debian/tmp
