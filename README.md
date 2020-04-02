@@ -1,6 +1,6 @@
 # NAME
 
-kv – simple k/v json database stored in user home folder
+kv – simple k/v JSON database stored in the user's home folder
 
 # SYNOPSIS
 
@@ -8,10 +8,10 @@ kv – simple k/v json database stored in user home folder
 
 # DESCRIPTION
 
-**kv** allows you to get set k/v pairs, stored in json
-format in the users home folder
+**kv** allows setting k/v pairs, stored in JSON
+format in the user's home folder.
 
 # GENERAL OPTIONS
 
 **-h**, **--help**
-:   Display a friendly help message.
+:   Display a friendly help message. It is your friend.
