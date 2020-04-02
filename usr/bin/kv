@@ -1,0 +1,49 @@
+#!/bin/bash
+
+CONF="default"
+
+while getopts "hc:" opt; do
+    case $opt in
+	c)
+	    CONF=$2
+	    shift 2
+	    ;;
+	h)
+	    man kv
+	    exit 0;
+	    ;;
+	\?)
+	    echo "Invalid option: -$OPTARG" >&2
+	    ;;
+    esac
+done
+
+CMD=$1
+
+mkdir -p ~/.kv
+CONFIG=~/.kv/$CONF
+touch "$CONFIG"
+data=`cat $CONFIG`
+
+if [ "$data" == "" ]; then
+    echo "{}" > $CONFIG
+    data="{}"
+fi
+
+
+case $CMD in
+    "get" )
+	echo $(echo $data | jq -r ".$2") ;;
+    "dump" )
+        echo $data ;;
+    "keys" )
+        echo $(echo $data | jq -r "keys[]") | tr " " "\n" ;;
+    "values" )
+        echo $(echo $data | jq -r "values[]") | tr " " "\n" ;;
+    "set" )
+        update=$(jq ".$2 = \"$3\"" $CONFIG)
+	echo $update > $CONFIG;;
+    "unset" )
+	update=$(echo $data | jq "del(.$2)")
+	echo $update > $CONFIG;;
+esac
