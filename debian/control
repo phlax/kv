@@ -1,0 +1,15 @@
+Source: kv
+Section: devel
+Priority: optional
+Maintainer: "Ryan Northey" <ryan@synca.io>
+Build-Depends: debhelper (>=11~), bash-completion, pandoc
+Standards-Version: 4.1.4
+Homepage: https://github.com/phlax/kv
+
+Package: kv
+Section: devel
+Priority: optional
+Architecture: all
+Description: Run commands in registered directories
+ Alias directories, and run commands in those directories,
+ kv autocompletion of commands and paths.
