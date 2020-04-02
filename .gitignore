@@ -1,5 +1,5 @@
 *~
 debian/.debhelper
-debian/with
+debian/kv
 debian/*log
 debian/debhelper-build-stamp
