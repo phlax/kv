@@ -1,31 +1,51 @@
 #!/bin/bash
 
-CONF=$1
-CMD=$2
+CONF="default"
 
-touch ~/.$CONF
-data=`cat ~/.$CONF`
+while getopts "hc:" opt; do
+    case $opt in
+	c)
+	    CONF=$2
+	    shift 2
+	    ;;
+	h)
+	    man kv
+	    exit 0;
+	    ;;
+	\?)
+	    echo "Invalid option: -$OPTARG" >&2
+	    ;;
+    esac
+done
+
+CMD=$1
+
+mkdir -p ~/.kv
+CONFIG=~/.kv/$CONF
+touch "$CONFIG"
+data=`cat $CONFIG`
 
 if [ "$data" == "" ]; then
-    echo "{}" > ~/.$CONF
+    echo "{}" > $CONFIG
     data="{}"
 fi
 
 
 case $CMD in
     "get" )
-	value=$(echo $data | jq -r ".$3")
+	value=$(echo $data | jq -r ".$2")
 	echo $value
 	;;
     "dump" )
         echo $data ;;
-    "list" )
-        echo $data ;;
-    "unset" )
-        echo $data ;;
+    "keys" )
+        echo $(echo $data | jq -r "keys[]") | tr " " "\n" ;;
+    "values" )
+        echo $(echo $data | jq -r "values[]") | tr " " "\n" ;;
     "set" )
-        update=$(jq ".$3 = \"$4\"" ~/.$CONF)
-	echo $update
-	echo $update > ~/.$CONF;;
-
+        update=$(jq ".$2 = \"$3\"" $CONFIG)
+	echo $update > $CONFIG;;
+    "unset" )
+	update=$(echo $data | jq "del(.$2)")
+	echo $update > $CONFIG;;
 esac
