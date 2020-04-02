@@ -1,6 +1,6 @@
 # NAME
 
-kv – run commands in registered directories
+kv – simple k/v json database stored in user home folder
 
 # SYNOPSIS
 
@@ -8,8 +8,8 @@ kv – run commands in registered directories
 
 # DESCRIPTION
 
-**kv** allows you to register file paths, and then alias those paths
-to run commands in the directory pointed to by path.
+**kv** allows you to get set k/v pairs, stored in json
+format in the users home folder
 
 # GENERAL OPTIONS
 
